@@ -16,7 +16,7 @@ def current_weather():
         response = requests.get(complete_url,
                                 params={'units': 'metric', 'lang': 'ru'})
         x = response.json()
-        print(x)
+
         y = x["main"]
         z = x["weather"]
         weather_description = 'В Уфе сейчас ' + str(z[0]['description']) + '! \n\n'
