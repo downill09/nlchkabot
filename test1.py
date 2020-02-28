@@ -1,13 +1,36 @@
 import telebot
 import random
 import requests
+import _json
 bot = telebot.TeleBot('888054888:AAH5_zHICdF1iedKINYBW55hFm0QWuJf3v8')
 
 
 def current_weather():
 
-    
-    
+    try:
+
+        api_key = "f4179114c9232e69087c46fa5ae4fa2b"
+        base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        city_name = "Ufa,RU"
+        complete_url = base_url + "q=" + city_name + "&APPID=" + api_key
+        response = requests.get(complete_url,
+                                params={'units': 'metric', 'lang': 'ru'})
+        x = response.json()
+
+        y = x["main"]
+        z = x["weather"]
+        weather_description = 'В Уфе сейчас ' + str(z[0]['description']) + '! \n\n'
+        wind_speed = 'Скорость ветра: ' + str(x["wind"]["speed"]) + 'м/с\U0001F300	'
+        current_temp = 'Где мой мозг...Тебе ведь так ничего не понятно...\U0001F644 \n\n\U0001F321В градусах это, примерно: ' + str(y["temp"]) + '\xb0C \n'
+        feels_like = '(Но желтые медведи ощущают это как ' + str(y["feels_like"]) + '\xb0C)' + '\n'
+        min_temp = 'Минимальная температура сегодня: ' + str(y["temp_min"]) + '\xb0C'
+        max_temp = 'Максимальная температура сегодня: ' + str(y["temp_max"]) + '\xb0C'
+
+        xxx = weather_description + current_temp + '\n' + feels_like + '\nЕще немного информации: \U0001F325\n\n' + min_temp + '\n' + max_temp + '\n' + wind_speed
+    except Exception as e:
+        print("Exception (weather):", e)
+        pass
+    return xxx
 
 
 dance = ['Я хочу танцевать свои танцы!', 'Криминаль-кри-криминаль...', 'Я не для актёрского мастерства создана',
