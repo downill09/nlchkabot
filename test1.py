@@ -1,7 +1,6 @@
 import telebot
 import random
 import requests
-import _json
 bot = telebot.TeleBot('888054888:AAH5_zHICdF1iedKINYBW55hFm0QWuJf3v8')
 
 
