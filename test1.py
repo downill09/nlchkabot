@@ -1,30 +1,32 @@
 import telebot
 import random
 import requests
-
+import _json
 bot = telebot.TeleBot('888054888:AAH5_zHICdF1iedKINYBW55hFm0QWuJf3v8')
 
 
 def current_weather():
-    s_city = "Ufa,RU"
-    city_id = 0
-    app_id = "f4179114c9232e69087c46fa5ae4fa2b"
-    try:
-        res = requests.get("http://api.openweathermap.org/data/2.5/find",
-                           params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': app_id})
-        data = res.json()
-        cities = ["{} ({})".format(d['name'], d['sys']['country'])
-                  for d in data['list']]
-        city_id = data['list'][0]['id']
-        res = requests.get("http://api.openweathermap.org/data/2.5/weather",
-                           params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': app_id})
-        data = res.json()
 
-        weather_description = 'На улице сейчас ' + data['weather'][0]['description'] + '!'
-        current_temp = 'Где мой мозг... В градусах это, примерно ' + data['main']['temp'] +'\xb0 C'
-        min_temp = 'Минимальная температура сегодня: ' + data['main']['temp_min'] + '\xb0 C'
-        max_temp = 'Максимальная температура сегодня: ' + data['main']['temp_max'] + '\xb0 C'
-        xxx = weather_description + current_temp + '\n' + min_temp + '\n' + max_temp
+    try:
+
+        api_key = "f4179114c9232e69087c46fa5ae4fa2b"
+        base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        city_name = "Ufa,RU"
+        complete_url = base_url + "q=" + city_name + "&APPID=" + api_key
+        response = requests.get(complete_url,
+                                params={'units': 'metric', 'lang': 'ru'})
+        x = response.json()
+        print(x)
+        y = x["main"]
+        z = x["weather"]
+        weather_description = 'В Уфе сейчас ' + str(z[0]['description']) + '! \n\n'
+        wind_speed = 'Скорость ветра: ' + str(x["wind"]["speed"]) + 'м/с\U0001F300	'
+        current_temp = 'Где мой мозг...Тебе ведь так ничего не понятно...\U0001F644 \n\n\U0001F321В градусах это, примерно: ' + str(y["temp"]) + '\xb0C \n'
+        feels_like = '(Но желтые медведи ощущают это как ' + str(y["feels_like"]) + '\xb0C)' + '\n'
+        min_temp = 'Минимальная температура сегодня: ' + str(y["temp_min"]) + '\xb0C'
+        max_temp = 'Максимальная температура сегодня: ' + str(y["temp_max"]) + '\xb0C'
+
+        xxx = weather_description + current_temp + '\n' + feels_like + '\nЕще немного информации: \U0001F325\n\n' + min_temp + '\n' + max_temp + '\n' + wind_speed
     except Exception as e:
         print("Exception (weather):", e)
         pass
@@ -70,7 +72,7 @@ def start_message(message):
     bot.send_message(message.chat.id, 'Извините, мне нужно учиться. \nУ меня нет времени смотреть на твои картинки.')
 
 
-keyboard1 = telebot.types.ReplyKeyboardMarkup(True, False)
-keyboard1.row('Привет', '\U0001F483', '\U0001F603', '\U0001F625', '\U0001F43B', 'Погода')
+keyboard1 = telebot.types.ReplyKeyboardMarkup(False, False)
+keyboard1.add('Привет', '\U0001F483', '\U0001F603', '\U0001F625', '\U0001F43B', 'Погода')
 
 bot.polling()
