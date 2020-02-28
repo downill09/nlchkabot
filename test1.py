@@ -15,12 +15,20 @@ def current_weather():
         data = res.json()
         cities = ["{} ({})".format(d['name'], d['sys']['country'])
                   for d in data['list']]
-        print("city:", cities)
         city_id = data['list'][0]['id']
-        print('city_id=', city_id)
+        res = requests.get("http://api.openweathermap.org/data/2.5/weather",
+                           params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': app_id})
+        data = res.json()
+
+        weather_description = 'На улице сейчас ' + data['weather'][0]['description'] + '!'
+        current_temp = 'Где мой мозг... В градусах это, примерно ' + data['main']['temp'] +'\xb0 C'
+        min_temp = 'Минимальная температура сегодня: ' + data['main']['temp_min'] + '\xb0 C'
+        max_temp = 'Максимальная температура сегодня: ' + data['main']['temp_max'] + '\xb0 C'
+        xxx = weather_description + current_temp + '\n' + min_temp + '\n' + max_temp
     except Exception as e:
-        print("Exception (find):", e)
+        print("Exception (weather):", e)
         pass
+    return xxx
 
 
 dance = ['Я хочу танцевать свои танцы!', 'Криминаль-кри-криминаль...', 'Я не для актёрского мастерства создана',
