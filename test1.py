@@ -69,7 +69,7 @@ def start_message(message):
 
 @bot.message_handler(content_types=['photo'])
 def start_message(message):
-    bot.send_message(message.chat.id, 'Извините, мне нужно учиться. \nУ меня нет времени смотреть на твои картинки.')
+    bot.send_message(message.chat.id, 'Извините, мне нужно учиться. \nУ меня нет времени смотреть на твои картинки...')
 
 
 keyboard1 = telebot.types.ReplyKeyboardMarkup(False, False)
